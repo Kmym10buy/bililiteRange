@@ -1,4 +1,4 @@
-#Cross-Browser Text Ranges and Selections
+# Cross-Browser Text Ranges and Selections
 
 `bililiteRange(element)` returns an abstraction of a range of characters within element, initially all of the element.
 The range never extends outside the element. `element` is a DOM element (but it fails for the `<body>` element.
@@ -9,7 +9,7 @@ It treats the elements as a series of characters, which means that elements shou
 white space and counts newlines as characters. It also doesn't count `display: block` as ending in a newline (unless it actually does).
 The major use case is a pretty-printing editor (I use [Prism](https://prismjs.com/index.html)).
 
-##Methods
+## Methods
 
 ### `0`
 Returns or sets the beginning of the range, so you can use it like an array: `range[0] = 2`.
@@ -56,40 +56,40 @@ jQuery's [`data`](https://api.jquery.com/data/). See the documentation for [bili
 Returns the DOM element that the range was defined on.
 
 ### `scrollIntoView([fn: function])`
-Does its best to scroll the beginning of the range into the visible part of the element, by analogy to Element.scrollIntoView.
-See [scrollIntoView](scrollIntoView) for more details. Note that it does not move the element itself, just sets element.scrollTop so
+Does its best to scroll the beginning of the range into the visible part of the element, by analogy to `Element.scrollIntoView()`.
+See [scrollIntoView](scrollIntoView) for more details. Note that it does not move the element itself, just sets `element.scrollTop` so
 that the start of the range is within the visible part of the element. If it already visible, does nothing.
 This only scrolls vertically, not horizontally.
 
 The function passed in used to do the scrolling, with one parameter that is the target scrollTop, and `this` set to the element itself.
 So, to animate the scrolling, use `range.scrollIntoView( top => { $(this).animate({scrollTop: top}) })`. 
-he default function is `top => { this.scrollTop = top }`.
+The default function is `top => { this.scrollTop = top }`.
 
 ### `select()`
 If the element is the same as `document.activeElement`, then set the window selection to the current range. 
-if the element is not active, change the saved selection to the current range, and use that for bounds('selection').
+if the element is not active, change the saved selection to the current range, and use that for `bounds('selection')`.
 Sets up event listeners so that when the element is activated, the saved selection is restored (except if the element is activated
 by a mouse click, where the click location determines the selection). This means that tabbing into an element restores the previous selection.
 
-Note that this does not set the focus on the element; use range.element().focus() to do that. Note also that elements that 
+Note that this does not set the focus on the element; use `range.element().focus()` to do that. Note also that elements that 
 are not editable and do not have a tabindex cannot be focussed.
 
 ### `selection()`
-Short for rng.bounds('selection').text(), to get the text currently selected.
+Short for `range.bounds('selection').text()`, to get the text currently selected.
 
 ### `selection(s: string)`
-Short for `rng.bounds('selection').text(s, 'end').select()`; useful for inserting text at the insertion point.
+Short for `range.bounds('selection').text(s, 'end').select()`; useful for inserting text at the insertion point.
 This just inserts the String argument straight in the text; for a more sophisticated function, see `sendkeys` below.
 
 ### `sendkeys(s: string)`
 Basically does text(s, 'end') but interprets brace-surrounded words (like `'{Backspace}'` as special commands that execute the
-corresponding functions in bililiteRange.sendkeys, in this case bililiteRange.sendkeys['{Backspace}'].
+corresponding functions in `bililiteRange.sendkeys`, in this case `bililiteRange.sendkeys['{Backspace}']`.
 See the [full documentation](sendkeys).
 
 ### `text()`
 Returns the text of the current range.
 
-### `text(s: string, [[, 'start'|'end'|'all']], inputType = 'insertText')`
+### `text(s: string, [, 'start'|'end'|'all' [, inputType = 'insertText']])`
 Sets the text of the current range to s. If the second argument is present, also sets bounds, to the start of the inserted text,
 the end of the inserted text (what happens with the usual "paste" command
 or the entire inserted text. Follow this with select() to actually set the selection.
@@ -119,8 +119,53 @@ To scroll the element so that the range is at the top of the element, set `range
 See `range.scrollIntoView()` above.
 
 ### `wrap(Node)`
-Wraps the range with the DOM Node passed in (generally will be an HTML element). Only works `
-with ranges defined on the DOM itself; throws an error for ranges in `<input>` or `<textarea> elements. 
+Wraps the range with the DOM Node passed in (generally will be an HTML element). Only works 
+with ranges defined on the DOM itself; throws an error for ranges in `<input>` or `<textarea>` elements. 
 Depending on the browser, will throw an error for invalid HTML (like wrapping a `<p>` with a `<span>`). For example, to highlight 
-the range, use rng.wrap (document.createElement('strong'));
+the range, use `range.wrap ( document.createElement('strong') )`;
+
+## Events
+
+## `dispatch(opts)
+Creates an event of type `opts.type`, then extends it with the rest of `opts`, and dispatches it on `range.element()`. Basically does:
+
+````js
+let event =  new CustomEvent(opts.type);
+for (let key in opts) event[key] = opts[key];
+this.element().dispatchEvent(event); // but actually does this asynchonously, on the event queue
+````
+
+## `listen(s, fn)`
+
+Shorthand for `this.element().addEventListener(s, fn)`.
+
+## `dontlisten(s, fn)`
+Shorthand for `this.element().removeEventListener(s, fn)`.
+
+## Other files
+
+### `bililiteRange.util.js`
+
+Adds useful functions for searching and keeping the ranges up-to-date with changes in the underlying text. 
+Depends on `bililiteRange.js`. [Documentation](util)
+
+### `bililiteRange.undo.js`
+
+Adds an undo/redo stack to editable elements. Depends on `bililiteRange.js` and my [historystack](https://github.com/dwachss/historystack).
+[Documentation](undo)
+
+### `bililiteRange.ex.js`
+
+Implements the [ex line-editor](http://ex-vi.sourceforge.net/ex.html). Depends on `bililiteRange.js`, `bililiteRange.util.js` and
+`bililiteRange.undo.js`. Works better with my [toolbar](https://github.com/dwachss/toolbar) and
+[status](https://github.com/dwachss/status). [Documentation](ex)
+
+## Obsolete files
+
+`jquery.jsvk.js` is a jQuery wrapper for Ilya Lebedev's JavaScript VirtualKeyboard (http://www.allanguages.info/), which is apparently now
+dead. Depends on
+bililiteRange for character insertion.[Documentation](http://bililite.com/blog/2013/01/30/jsvk-a-jquery-plugin-for-virtualkeyboard/)
+
+If you want it, it is on the [IE branch](https://github.com/dwachss/bililiteRange/blob/IE/jquery.jsvk.js).
+
 
