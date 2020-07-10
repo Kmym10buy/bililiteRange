@@ -45,10 +45,10 @@ This only uses the actual selection if the element is the same as document.activ
 then bililiteRange sets up event listeners to remember the selection from when the element was the active element,
 and uses that.
 
-- `bounds('start') sets the range to `[0,0]`.
-- `bounds('end') sets the range to `[length, length]`.
+- `bounds('start')` sets the range to `[0,0]`.
+- `bounds('end')` sets the range to `[length, length]`.
 
-### `clone()
+### `clone()`
 Return a new bililiteRange with the same bounds as this one.
 
 ### `data()`
