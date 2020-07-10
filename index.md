@@ -37,11 +37,14 @@ Sets the bounds of the current range to the `b`. Does not throw an error for lim
 ### `bounds(s: string)`
 Looks for a function `bililiteRange[s]` that is called with `this` set to the current `bililiteRange`, and sets the bounds.
 Predefined functions include :
+
 	- `bounds('all')`: sets the range to cover the entire element.
-	- `bounds('selection') sets the range to the part of the current selection that is in the element.
+	- `bounds('selection')` sets the range to the part of the current selection that is in the element.
+	
 This only uses the actual selection if the element is the same as document.activeElement; if the element is not active,
 then bililiteRange sets up event listeners to remember the selection from when the element was the active element,
 and uses that.
+
 	- `bounds('start') sets the range to `[0,0]`.
 	- `bounds('end') sets the range to `[length, length]`.
 
@@ -126,7 +129,7 @@ the range, use `range.wrap ( document.createElement('strong') )`;
 
 ## Extensions
 
-## `bililiteRange.prototype`
+### `bililiteRange.prototype`
 
 Even though `bililiteRange` is a function, not a class (use `r = bililiteRange(el)`, not `r = new bililiteRange(el)`), it is based on
 internal classes, and adding a method to `bililiteRange.prototype` makes it available to all ranges. So
