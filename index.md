@@ -124,9 +124,36 @@ with ranges defined on the DOM itself; throws an error for ranges in `<input>` o
 Depending on the browser, will throw an error for invalid HTML (like wrapping a `<p>` with a `<span>`). For example, to highlight 
 the range, use `range.wrap ( document.createElement('strong') )`;
 
+## Extensions
+
+## `bililiteRange.prototype`
+
+Even though `bililiteRange` is a function, not a class (use `r = bililiteRange(el)`, not `r = new bililiteRange(el)`), it is based on
+internal classes, and adding a method to `bililiteRange.prototype` makes it available to all ranges. So
+
+````js
+bililiteRange.prototype.log = () => {
+	console.log(this.bounds(), ': ', this.text());
+	return this; // always good to return this to allow for chaining
+}
+````
+
+allows for 
+
+````js
+let r = bililiteRange(el);
+r.all('hello, world').bounds([0,5]).log(); // on the console: [0,5]: "hello"
+````
+
+As a shorthand (based on [jQuery extend](https://api.jquery.com/jQuery.fn.extend/)) there is
+
+### `extend(obj)`
+
+Adds all the enumerable members of obj to `bililiteRange.prototype`, with `Object.assign (bililiteRange.prototype, obj)`.
+
 ## Events
 
-## `dispatch(opts)
+### `dispatch(opts)
 Creates an event of type `opts.type`, then extends it with the rest of `opts`, and dispatches it on `range.element()`. Basically does:
 
 ````js
@@ -135,11 +162,11 @@ for (let key in opts) event[key] = opts[key];
 this.element().dispatchEvent(event); // but actually does this asynchonously, on the event queue
 ````
 
-## `listen(s, fn)`
+### `listen(s, fn)`
 
 Shorthand for `this.element().addEventListener(s, fn)`.
 
-## `dontlisten(s, fn)`
+### `dontlisten(s, fn)`
 Shorthand for `this.element().removeEventListener(s, fn)`.
 
 ## Other files
