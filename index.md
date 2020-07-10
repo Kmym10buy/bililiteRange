@@ -164,7 +164,7 @@ Implements the [ex line-editor](http://ex-vi.sourceforge.net/ex.html). Depends o
 
 `jquery.jsvk.js` is a jQuery wrapper for Ilya Lebedev's JavaScript VirtualKeyboard (http://www.allanguages.info/), which is apparently now
 dead. Depends on
-bililiteRange for character insertion.[Documentation](http://bililite.com/blog/2013/01/30/jsvk-a-jquery-plugin-for-virtualkeyboard/)
+bililiteRange for character insertion. [Documentation](http://bililite.com/blog/2013/01/30/jsvk-a-jquery-plugin-for-virtualkeyboard/)
 
 If you want it, it is on the [IE branch](https://github.com/dwachss/bililiteRange/blob/IE/jquery.jsvk.js).
 
