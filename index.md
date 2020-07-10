@@ -147,9 +147,22 @@ r.all('hello, world').bounds([0,5]).log(); // on the console: [0,5]: "hello"
 
 As a shorthand (based on [jQuery extend](https://api.jquery.com/jQuery.fn.extend/)) there is
 
-### `extend(obj)`
+### `bililiteRange.extend(obj)`
 
 Adds all the enumerable members of obj to `bililiteRange.prototype`, with `Object.assign (bililiteRange.prototype, obj)`.
+
+### `bililiteRange.override (name, fn)`
+
+Allows [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch) methods. Replaces `bililiteRange.prototype[name]` with a function
+that creates `this.super` with the old value of `bililiteRange.prototype[name]` and calls the `fn`. So, for example, to censor
+forbidden words:
+
+````js
+bililiteRange.override ('text', (text, opts) => {
+	text = censor(text); // left as an exercise for the reader
+	return this.super(text, opts);
+}) 
+````
 
 ## Events
 
