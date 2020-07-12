@@ -1,7 +1,7 @@
 # Cross-Browser Text Ranges and Selections
 
 `bililiteRange(element)` returns an abstraction of a range of characters within element, initially all of the element.
-The range never extends outside the element. `element` is a DOM element (but it fails for the `<body>` element.
+The range never extends outside the element. `element` is a DOM element (but it fails for the `<body>` element).
 
 It works for `<input>`, `<textarea>` and any other `HTMLELement` (though they should have `contenteditable` set to be useful).
 
@@ -51,9 +51,9 @@ and uses that.
 ### `clone()`
 Return a new bililiteRange with the same bounds as this one.
 
-### `data()`
+### `data`
 Returns an object tied to the underlying element, useful for storing element (rather than per range). Similar to
-jQuery's [`data`](https://api.jquery.com/data/). See the documentation for [bililiteRange data](data).
+jQuery's [`data`](https://api.jquery.com/data/). See the documentation for [bililiteRange data](data.md).
 
 ### `element()`
 Returns the DOM element that the range was defined on.
@@ -87,7 +87,7 @@ This just inserts the String argument straight in the text; for a more sophistic
 ### `sendkeys(s: string)`
 Basically does text(s, 'end') but interprets brace-surrounded words (like `'{Backspace}'` as special commands that execute the
 corresponding functions in `bililiteRange.sendkeys`, in this case `bililiteRange.sendkeys['{Backspace}']`.
-See the [full documentation](sendkeys).
+See the [full documentation](sendkeys.md).
 
 ### `text()`
 Returns the text of the current range.
@@ -169,7 +169,7 @@ bililiteRange.override ('text', (text, opts) => {
 
 ## Events
 
-### `dispatch(opts)
+### `dispatch(opts)`
 Creates an event of type `opts.type`, then extends it with the rest of `opts`, and dispatches it on `range.element()`. Basically does:
 
 ````js
@@ -190,18 +190,18 @@ Shorthand for `this.element().removeEventListener(s, fn)`.
 ### `bililiteRange.util.js`
 
 Adds useful functions for searching and keeping the ranges up-to-date with changes in the underlying text. 
-Depends on `bililiteRange.js`. [Documentation](util)
+Depends on `bililiteRange.js`. [Documentation](util.md)
 
 ### `bililiteRange.undo.js`
 
 Adds an undo/redo stack to editable elements. Depends on `bililiteRange.js` and my [historystack](https://github.com/dwachss/historystack).
-[Documentation](undo)
+[Documentation](undo.md)
 
 ### `bililiteRange.ex.js`
 
 Implements the [ex line-editor](http://ex-vi.sourceforge.net/ex.html). Depends on `bililiteRange.js`, `bililiteRange.util.js` and
 `bililiteRange.undo.js`. Works better with my [toolbar](https://github.com/dwachss/toolbar) and
-[status](https://github.com/dwachss/status). [Documentation](ex)
+[status](https://github.com/dwachss/status). [Documentation](ex.md)
 
 ## Obsolete files
 
